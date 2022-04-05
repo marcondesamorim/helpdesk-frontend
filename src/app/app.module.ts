@@ -25,9 +25,10 @@ import { AppComponent } from './app.component';
 import { HomeComponent } from './components/home/home.component';
 //Componentes do projeto
 import { NavComponent } from './components/nav/nav.component';
+import { HeaderComponent } from './components/header/header.component';
 
 @NgModule({
-  declarations: [AppComponent, NavComponent, HomeComponent],
+  declarations: [AppComponent, NavComponent, HomeComponent, HeaderComponent],
   imports: [
     BrowserModule,
     AppRoutingModule,
