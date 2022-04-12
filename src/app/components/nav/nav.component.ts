@@ -10,7 +10,7 @@ import { AuthService } from 'src/app/services/auth.service';
 })
 export class NavComponent implements OnInit {
   constructor(private router: Router, private authService: AuthService, private toast: ToastrService) {
-    this.router.navigate(['tecnicos/create']);
+    this.router.navigate(['tecnicos']);
   }
 
   ngOnInit(): void {}
