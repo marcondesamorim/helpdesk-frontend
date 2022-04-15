@@ -1,5 +1,4 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { FormControl, Validators } from '@angular/forms';
 import { MatCheckbox } from '@angular/material/checkbox';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
@@ -7,11 +6,11 @@ import { Tecnico } from 'src/app/models/tecnico';
 import { TecnicoService } from 'src/app/services/tecnico.service';
 
 @Component({
-  selector: 'app-tecnico-update',
-  templateUrl: './tecnico-update.component.html',
-  styleUrls: ['./tecnico-update.component.css'],
+  selector: 'app-tecnico-delete',
+  templateUrl: './tecnico-delete.component.html',
+  styleUrls: ['./tecnico-delete.component.css'],
 })
-export class TecnicoUpdateComponent implements OnInit {
+export class TecnicoDeleteComponent implements OnInit {
   tecnico: Tecnico = {
     id: '',
     nome: '',
@@ -33,11 +32,6 @@ export class TecnicoUpdateComponent implements OnInit {
     private route: ActivatedRoute
   ) {}
 
-  nome: FormControl = new FormControl(null, Validators.minLength(3));
-  cpf: FormControl = new FormControl(null, Validators.required);
-  email: FormControl = new FormControl(null, Validators.email);
-  senha: FormControl = new FormControl(null, Validators.minLength(3));
-
   ngOnInit(): void {
     this.tecnico.id = this.route.snapshot.paramMap.get('id');
     this.findById();
@@ -46,31 +40,26 @@ export class TecnicoUpdateComponent implements OnInit {
   findById(): void {
     this.service.findById(this.tecnico.id).subscribe((resposta) => {
       this.tecnico = resposta;
-      this.tecnico.perfis = this.setChecked();
+      this.setChecked();
     });
   }
 
-  setChecked(): any[] {
-    const perfis = [];
+  setChecked(): void {
     if (this.tecnico.perfis.includes('ADMIN')) {
       this.adminCheckbox.checked = true;
-      perfis.push(0);
     }
     if (this.tecnico.perfis.includes('CLIENTE')) {
       this.clienteCheckbox.checked = true;
-      perfis.push(1);
     }
     if (this.tecnico.perfis.includes('TECNICO')) {
       this.tecnicoCheckbox.checked = true;
-      perfis.push(2);
     }
-    return perfis;
   }
 
-  update(): void {
-    this.service.update(this.tecnico).subscribe(
+  delete(): void {
+    this.service.delete(this.tecnico.id).subscribe(
       () => {
-        this.toast.success('Técnico atualizado com sucesso!', 'Update');
+        this.toast.success('Técnico deletado com sucesso!', 'Delete');
         this.router.navigate(['tecnicos']);
       },
       (ex) => {
@@ -84,19 +73,5 @@ export class TecnicoUpdateComponent implements OnInit {
         }
       }
     );
-  }
-
-  addPerfil(perfil: any): void {
-    console.log('perfil: ' + perfil);
-    if (this.tecnico.perfis.includes(perfil)) {
-      this.tecnico.perfis.splice(this.tecnico.perfis.indexOf(perfil), 1);
-    } else {
-      this.tecnico.perfis.push(perfil);
-    }
-    console.log(this.tecnico.perfis);
-  }
-
-  validaCampos(): boolean {
-    return this.nome.valid && this.cpf.valid && this.email.valid && this.senha.valid;
   }
 }

@@ -3,16 +3,16 @@ import { FormControl, Validators } from '@angular/forms';
 import { MatCheckbox } from '@angular/material/checkbox';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
-import { Tecnico } from 'src/app/models/tecnico';
-import { TecnicoService } from 'src/app/services/tecnico.service';
+import { Cliente } from 'src/app/models/cliente';
+import { ClienteService } from 'src/app/services/cliente.service';
 
 @Component({
-  selector: 'app-tecnico-update',
-  templateUrl: './tecnico-update.component.html',
-  styleUrls: ['./tecnico-update.component.css'],
+  selector: 'app-cliente-update',
+  templateUrl: './cliente-update.component.html',
+  styleUrls: ['./cliente-update.component.css'],
 })
-export class TecnicoUpdateComponent implements OnInit {
-  tecnico: Tecnico = {
+export class ClienteUpdateComponent implements OnInit {
+  cliente: Cliente = {
     id: '',
     nome: '',
     cpf: '',
@@ -27,7 +27,7 @@ export class TecnicoUpdateComponent implements OnInit {
   @ViewChild('tecnicoCheckbox') tecnicoCheckbox: MatCheckbox;
 
   constructor(
-    private service: TecnicoService,
+    private service: ClienteService,
     private toast: ToastrService,
     private router: Router,
     private route: ActivatedRoute
@@ -39,39 +39,39 @@ export class TecnicoUpdateComponent implements OnInit {
   senha: FormControl = new FormControl(null, Validators.minLength(3));
 
   ngOnInit(): void {
-    this.tecnico.id = this.route.snapshot.paramMap.get('id');
+    this.cliente.id = this.route.snapshot.paramMap.get('id');
     this.findById();
   }
 
   findById(): void {
-    this.service.findById(this.tecnico.id).subscribe((resposta) => {
-      this.tecnico = resposta;
-      this.tecnico.perfis = this.setChecked();
+    this.service.findById(this.cliente.id).subscribe((resposta) => {
+      this.cliente = resposta;
+      this.cliente.perfis = this.setChecked();
     });
   }
 
   setChecked(): any[] {
     const perfis = [];
-    if (this.tecnico.perfis.includes('ADMIN')) {
+    if (this.cliente.perfis.includes('ADMIN')) {
       this.adminCheckbox.checked = true;
       perfis.push(0);
     }
-    if (this.tecnico.perfis.includes('CLIENTE')) {
+    if (this.cliente.perfis.includes('CLIENTE')) {
       this.clienteCheckbox.checked = true;
       perfis.push(1);
     }
-    if (this.tecnico.perfis.includes('TECNICO')) {
-      this.tecnicoCheckbox.checked = true;
+    if (this.cliente.perfis.includes('TECNICO')) {
+      this.clienteCheckbox.checked = true;
       perfis.push(2);
     }
     return perfis;
   }
 
   update(): void {
-    this.service.update(this.tecnico).subscribe(
+    this.service.update(this.cliente).subscribe(
       () => {
-        this.toast.success('Técnico atualizado com sucesso!', 'Update');
-        this.router.navigate(['tecnicos']);
+        this.toast.success('cliente atualizado com sucesso!', 'Update');
+        this.router.navigate(['clientes']);
       },
       (ex) => {
         console.log(ex);
@@ -88,12 +88,12 @@ export class TecnicoUpdateComponent implements OnInit {
 
   addPerfil(perfil: any): void {
     console.log('perfil: ' + perfil);
-    if (this.tecnico.perfis.includes(perfil)) {
-      this.tecnico.perfis.splice(this.tecnico.perfis.indexOf(perfil), 1);
+    if (this.cliente.perfis.includes(perfil)) {
+      this.cliente.perfis.splice(this.cliente.perfis.indexOf(perfil), 1);
     } else {
-      this.tecnico.perfis.push(perfil);
+      this.cliente.perfis.push(perfil);
     }
-    console.log(this.tecnico.perfis);
+    console.log(this.cliente.perfis);
   }
 
   validaCampos(): boolean {
