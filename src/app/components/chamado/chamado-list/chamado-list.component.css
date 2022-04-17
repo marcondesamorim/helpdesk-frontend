@@ -27,9 +27,6 @@ h1 {
 
 mat-radio-group {
     display: flex;
-    flex-direction: column;
-}
-
-mat-radio-button {
-    margin: 0.5rem 0.5rem;
+    justify-content: space-between;
+    margin: 1rem 1rem;
 }
