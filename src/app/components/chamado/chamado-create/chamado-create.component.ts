@@ -50,16 +50,16 @@ export class ChamadoCreateComponent implements OnInit {
   }
 
   create(): void {
-    // this.chamadoService.create(this.chamado).subscribe(
-    //   (resposta) => {
-    //     this.toastService.success('Chamado criado com sucesso', 'Novo chamado');
-    //     this.router.navigate(['chamados']);
-    //   },
-    //   (ex) => {
-    //     console.log(ex);
-    //     this.toastService.error(ex.error.error);
-    //   }
-    // );
+    this.chamadoService.create(this.chamado).subscribe(
+      (resposta) => {
+        this.toastService.success('Chamado criado com sucesso', 'Novo chamado');
+        this.router.navigate(['chamados']);
+      },
+      (ex) => {
+        console.log(ex);
+        this.toastService.error(ex.error.error);
+      }
+    );
   }
 
   findAllClientes(): void {
