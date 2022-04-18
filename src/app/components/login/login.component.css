@@ -36,3 +36,7 @@ button {
 .inputs {
     width: 80%;
 }
+
+mat-icon {
+    opacity: 0.6;
+}
